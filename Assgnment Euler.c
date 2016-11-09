@@ -17,7 +17,7 @@ double f2prime(double f_prev, double f2_prev)		/* Functions, derivation of theta
 {
 	if (f2_prev == 0) 				/*An error that will never happen at given L2 and L3, triggers when theta 3 = 0/division by zero*/
 	{
-		f2_prev += 1e-304;
+		f2_prev += 1e-304;			/*I should check for the number previous to f2_prev to see if -> +0 or -0, but it doesnt rly matter here */
 	}
 	double y = -(L2)*(W2)*cos(f_prev)/(L3)/cos(f2_prev);
 	return y;
@@ -32,29 +32,25 @@ double modulo(double x, double y)  	/*general fn to create modulus for doubles. 
 	x = x - (floor(x/y)) * y;
 	return x;
 }
+
+
 /* ========================================================================================== */
 int main (void)
 {
 	double * val, * val2;												/*Declarations, memory*/
 	double fprime(int),f2prime(double,double), modulo(double,double);	/*Declarations, functions*/
-	double val_init = -42.4242, time_step = -0.044224422;				/*Declarations, input defaults*/
+	double val_init = -42.42, time_step = -0.4422;						/*Declarations, input defaults*/
 	FILE * spam;														/*Declarations, file I/O*/
-	int qa, time_max = -424242;											/*Declarations, dummy var and input default*/
-	char empty_char = '\0';												/*Declarations, dummy var*/
+	int qa, time_max = -4242;											/*Declarations, dummy var and input default*/
+	char qb,qc,qd;														/*Declarations, dummy var*/
 	
 	/*================================================================================================== */
 	printf("Inputs:\n  1) Initial Theta2 (degrees)\n  2) Time step (second)\n  3) No. of Intervals.\n");
-	printf("Time step of = 0.0010 is recommended\n");
+	printf("Example: iterating until time = 3.0 s, you can use Step = 0.1 * Intervals = 30\n");
 	
 	printf("====================================\n");					/*Input: Theta2, time (step*interval)*/
-	scanf("%lf",&val_init);
-	scanf("%lf",&time_step);
-	scanf("%d%c",&time_max, &empty_char);
-	
-	
-	/* ============================================================================================ */
-	if ((time_max == -424242) || (empty_char != '\n') || (val_init == -42.4242)	|| (time_step == -0.044224422))	
-	/*Error Handling, invalid input*/
+	scanf("%lf%c",&val_init,&qb);
+	if (!((qb == '\n') || (qb == ' ')))
 	{
 		spam = fopen("ESP1107_assignment_nicolas.dat","a");
 		fprintf(spam,"Error: Incorrect Input Type");
@@ -63,6 +59,28 @@ int main (void)
 		fclose(spam);
 		return 0;
 	}
+	scanf("%lf%c",&time_step,&qc);
+	if (!((qc == '\n') || (qc == ' ')))
+	{
+		spam = fopen("ESP1107_assignment_nicolas.dat","a");
+		fprintf(spam,"Error: Incorrect Input Type");
+		printf("Error: Incorrect Input Type");
+		fprintf(spam,"\n\n\n====================================\n");
+		fclose(spam);
+		return 0;
+	}
+	scanf("%d%c",&time_max, &qd);
+	if (!((qd == '\n') || (qd == ' ')))
+	{
+		spam = fopen("ESP1107_assignment_nicolas.dat","a");
+		fprintf(spam,"Error: Incorrect Input Type");
+		printf("Error: Incorrect Input Type");
+		fprintf(spam,"\n\n\n====================================\n");
+		fclose(spam);
+		return 0;
+	}
+	
+	/* ============================================================================================ */
 	if (time_step == 0)
 	{
 		spam = fopen("ESP1107_assignment_nicolas.dat","a");
@@ -144,10 +162,8 @@ int main (void)
 	{
 		fprintf(spam, " %7f %+-14.6e %+-14.6e\n", (qa*time_step),val[qa]*180/PI, val2[qa]*180/PI);
 	}
-	
-	fprintf(spam,"\n====================================\neof");	/*marks end of file with eof*/
+	fprintf(spam,"\n====================================\n");
 	fclose(spam);
 
 	return 0;
 }
-
