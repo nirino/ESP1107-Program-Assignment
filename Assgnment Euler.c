@@ -7,24 +7,24 @@
 #define L3 0.26
 #define W2 1.6
 
-double fprime(int time_int)		/*Functions, derivation of theta 2*/
+double fprime(int time_int)	/*Functions, derivation of theta 2*/
 {
 	double y = W2;
 	return y;
 }
 
-double f2prime(double f_prev, double f2_prev)		/* Functions, derivation of theta 3*/
+double f2prime(double f_prev, double f2_prev)	/* Functions, derivation of theta 3*/
 {
-	if (f2_prev == 0) 				/*An error that will never happen at given L2 and L3, triggers when theta 3 = 0/division by zero*/
+	if (f2_prev == 0) 			/*An error that will never happen at given L2 and L3, triggers when theta 3 = 0/division by zero*/
 	{
-		f2_prev += 1e-304;			/*I should check for the number previous to f2_prev to see if -> +0 or -0, but it doesnt rly matter here */
+		f2_prev += 1e-304;		/*I should check for the number previous to f2_prev to see if -> +0 or -0, but it doesnt rly matter here */
 	}
 	double y = -(L2)*(W2)*cos(f_prev)/(L3)/cos(f2_prev);
 	return y;
 }
 
 double modulo(double x, double y)  	/*general fn to create modulus for doubles. works with negative numbers. */
-{									/*May introduce err, albeit minimal*/
+{					/*May introduce err, albeit minimal*/
 	if (y<0)
 	{
 		y = -y;
@@ -37,18 +37,18 @@ double modulo(double x, double y)  	/*general fn to create modulus for doubles. 
 /* ========================================================================================== */
 int main (void)
 {
-	double * val, * val2;												/*Declarations, memory*/
+	double * val, * val2;							/*Declarations, memory*/
 	double fprime(int),f2prime(double,double), modulo(double,double);	/*Declarations, functions*/
-	double val_init = -42.42, time_step = -0.4422;						/*Declarations, input defaults*/
-	FILE * spam;														/*Declarations, file I/O*/
-	int qa, time_max = -4242;											/*Declarations, dummy var and input default*/
-	char qb,qc,qd;														/*Declarations, dummy var*/
+	double val_init = -42.42, time_step = -0.4422;				/*Declarations, input defaults*/
+	FILE * spam;								/*Declarations, file I/O*/
+	int qa, time_max = -4242;						/*Declarations, dummy var and input default*/
+	char qb,qc,qd;								/*Declarations, dummy var*/
 	
 	/*================================================================================================== */
 	printf("Inputs:\n  1) Initial Theta2 (degrees)\n  2) Time step (second)\n  3) No. of Intervals.\n");
 	printf("Example: iterating until time = 3.0 s, you can use Step = 0.1 * Intervals = 30\n");
 	
-	printf("====================================\n");					/*Input: Theta2, time (step*interval)*/
+	printf("====================================\n");			/*Input: Theta2, time (step*interval)*/
 	scanf("%lf%c",&val_init,&qb);
 	if (!((qb == '\n') || (qb == ' ')))
 	{
@@ -99,7 +99,7 @@ int main (void)
 		fclose(spam);
 		return 0;
 	}
-	if (((time_step < 0.0) ^ (time_max < 0.0)) == 1)					/*Error Handling, negative time*/
+	if (((time_step < 0.0) ^ (time_max < 0.0)) == 1)				/*Error Handling, negative time*/
 	{
 		spam = fopen("ESP1107_assignment_nicolas.dat","a");
 		fprintf(spam,"Error: Does not support turning back time");
@@ -119,7 +119,7 @@ int main (void)
 	}
 	/*=================================================================================================== */
 	val = (double *) malloc((time_max+1)*sizeof(double));			/*Memory Alloc*/
-	if (val == NULL)												/*Memory Alloc - Error, Memory unavailable*/
+	if (val == NULL)							/*Memory Alloc - Error, Memory unavailable*/
 	{
 		spam = fopen("ESP1107_assignment_nicolas.dat","a");
 		fprintf(spam,"Error: Unable to allocate memory");
@@ -131,7 +131,7 @@ int main (void)
 	val_init = modulo(val_init,360) * PI / 180;
 	val[0] = val_init;
 	val2 = (double *) malloc((time_max+1)*sizeof(double));
-	if (val == NULL)												/*Memory Alloc - Error, Memory unavailable*/
+	if (val == NULL)							/*Memory Alloc - Error, Memory unavailable*/
 	{
 		spam = fopen("ESP1107_assignment_nicolas.dat","a");
 		fprintf(spam,"Error: Too much memory needed from my tiny brain");
@@ -144,7 +144,7 @@ int main (void)
 	val2[0] = modulo(val2[0], 2*PI);
 
 	/* ============================================================================================================ */
-	for (qa = 1; qa <= time_max; qa++)								/*Processes next values*/
+	for (qa = 1; qa <= time_max; qa++)						/*Processes next values*/
 	{
 		val[qa] = val[qa-1] + fprime(time_step)* time_step;
 		val[qa] = modulo(val[qa],2*PI);
