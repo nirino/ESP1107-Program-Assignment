@@ -153,7 +153,7 @@ int main (void)
 	}
 	/*============================================================================================================= */
 	spam = fopen("ESP1107_assignment_nicolas.dat","w");				/*Output*/
-	fprintf(spam, "F(0) = %G \n", val_init* 180/PI);
+	fprintf(spam, "theta(0) = %G \n", val_init* 180/PI);
 	fprintf(spam, "Time step = %G \n", time_step);
 	fprintf(spam, "Time intervals = %i\n\n", time_max);
 	fprintf(spam, "t.......w2.............w3.............\n");		/*8 lines for t, 15 for f(t) and g(t)*/
